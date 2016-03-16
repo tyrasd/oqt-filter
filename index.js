@@ -4,7 +4,7 @@ var tileReduce = require('tile-reduce');
 var path = require('path');
 
 var mbtilesPath = process.argv[2] || "osm.mbtiles",
-    usersFile = process.argv[3] || './users.json';
+    filterPath = process.argv[3] || './filter.json';
 
 tileReduce({
     map: path.join(__dirname, '/map.js'),
@@ -14,13 +14,10 @@ tileReduce({
         raw: false
     }],
     mapOptions: {
-        usersFile: usersFile
-    },
-    maxWorkers: 3
+        filterPath: filterPath
+    }
 })
 .on('reduce', function(d) {
-    process.stdout.write(d);
 })
 .on('end', function() {
-    //process.stdout.write("---\n");
 });

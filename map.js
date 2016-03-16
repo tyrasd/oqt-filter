@@ -2,16 +2,11 @@
 var fs = require('fs');
 var turf = require('turf');
 
-var users = JSON.parse(fs.readFileSync(global.mapOptions.usersFile));
+var filter = JSON.parse(fs.readFileSync(global.mapOptions.filterPath));
 
-var filter = {
-    //geometry: 'LineString',
-    //tag: 'highway',
-    //experience: 'highways'
-    geometry: 'Polygon',
-    tag: 'building',
-    experience: 'buildings'
-}
+var users = {};
+if (filter.experience.file)
+    users = JSON.parse(fs.readFileSync(filter.experience.file));
 
 // Filter features touched by list of users defined by users.json
 module.exports = function(tileLayers, tile, writeData, done) {
@@ -25,15 +20,14 @@ module.exports = function(tileLayers, tile, writeData, done) {
         return feature.geometry.type === filter.geometry && hasTag(filter.tag);
     });
 
+    // enhance with user experience data
     layer.features.forEach(function(feature) {
         var user = feature.properties._uid;
-        if (!users[user] || !users[user][filter.experience])
-            console.error('unable to find experience data for uid '+user);
-        else
-            feature.properties._userExperience = users[user][filter.experience]; // todo: include all/generic experience data?
+        if (users[user] && users[user][filter.experience.field])
+            feature.properties._userExperience = users[user][filter.experience.field]; // todo: include all/generic experience data?
     });
 
+    // output
     writeData(layer);
-
     done();
 };
