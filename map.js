@@ -28,6 +28,8 @@ module.exports = function(tileLayers, tile, writeData, done) {
     });
 
     // output
-    writeData(layer);
+    if (layer.features.length > 0)
+        writeData(JSON.stringify(layer)+'\n');
+    
     done();
 };
