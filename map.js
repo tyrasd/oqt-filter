@@ -1,6 +1,5 @@
 'use strict';
 var fs = require('fs');
-var turf = require('turf');
 
 var filter = JSON.parse(fs.readFileSync(global.mapOptions.filterPath));
 
@@ -30,6 +29,6 @@ module.exports = function(tileLayers, tile, writeData, done) {
     // output
     if (layer.features.length > 0)
         writeData(JSON.stringify(layer)+'\n');
-    
+
     done();
 };
