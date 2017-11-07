@@ -7,3 +7,7 @@ Usage:
     node index.js <path-to-osmqatiles.mbtiles> <path-to-user-filter.json> | tippecanoe …
 
 See [`filter.example.json`](blob/master/filter.example.json) for how to set filter criteria.
+
+## see also
+
+* https://github.com/lukasmartinelli/osm-qa-filter
